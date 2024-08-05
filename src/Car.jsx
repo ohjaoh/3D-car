@@ -12,16 +12,18 @@ import useVehicleControls from "./utils/useVehicleControls";
 import { Vector3 } from "three";
 import { useFrame } from "@react-three/fiber";
 import useFollowCam from "./utils/useFollowCam";
+import { CarBody } from "./components/CarBody";
+import { Wheel } from "./components/Wheel";
 
 const Car = () => {
   const { pivot } = useFollowCam();
   const worldPosition = useMemo(() => new Vector3(), []); // 여기서 벡터3로 월드 위치(아마도 자동차의 위치같음)를 메모라이제이션? 하여 전역변수처럼 쓴다.
 
-  const chassisBodyValue = useControls("chassisBody", {
-    width: { value: 0.16, min: 0, max: 1 },
-    height: { value: 0.12, min: 0, max: 1 },
-    front: { value: 0.17 * 2, min: 0, max: 1 },
-  });
+  // const chassisBodyValue = useControls("chassisBody", {
+  //   width: { value: 0.33, min: 0, max: 1 },
+  //   height: { value: 0.35, min: 0, max: 1 },
+  //   front: { value: 0.23 * 2, min: 0, max: 1 },
+  // });
 
   const position = [0, 0.5, 0];
 
@@ -74,8 +76,8 @@ const Car = () => {
     // 숫자값으로 얼마나 비교할 것인지를 지정하는 것 0이면 카메라이동속도가 느리고 1이면 빠름
     pivot.position.lerp(worldPosition, 0.9); // 선형보관이 완벽하게 따라가는 것이 아닌 근접하게 따라가는 것이라 살짝살짝 끊어짐
     // 즉, 피벗은 기존의 카메라 위치 그리고 내부의 worldPosition은 자동차의 위치
-    // 피벗과 wp를 비교하고 피벗은 카메라의 위치는 자동차의 wp로 바뀌며 훅에서 카메라를 
-    // 피벗에 추가하고 씬에 피벗을 추가하여 카메라가 자동차를 따라가는 것 
+    // 피벗과 wp를 비교하고 피벗은 카메라의 위치는 자동차의 wp로 바뀌며 훅에서 카메라를
+    // 피벗에 추가하고 씬에 피벗을 추가하여 카메라가 자동차를 따라가는 것
   };
 
   // 매 프래임마다. mfc()를 호출
@@ -86,16 +88,21 @@ const Car = () => {
   return (
     <group ref={vehicle}>
       <group ref={chassisBody}>
-        <DummyCarBody
+        <CarBody />
+        {/* <DummyCarBody
           width={chassisBodyValue.width}
           height={chassisBodyValue.height}
           front={chassisBodyValue.front}
-        />
+        /> */}
       </group>
-      <DummyWheel wheelRef={wheels[0]} radius={wheelRadius} />
-      <DummyWheel wheelRef={wheels[1]} radius={wheelRadius} />
-      <DummyWheel wheelRef={wheels[2]} radius={wheelRadius} />
-      <DummyWheel wheelRef={wheels[3]} radius={wheelRadius} />
+      <Wheel wheelRef={wheels[0]} radius={wheelRadius} leftSide={true}/>
+      <Wheel wheelRef={wheels[1]} radius={wheelRadius} />
+      <Wheel wheelRef={wheels[2]} radius={wheelRadius} leftSide={true}/>
+      <Wheel wheelRef={wheels[3]} radius={wheelRadius} />
+      {/* <DummyWheel wheelRef={wheels[0]} radius={wheelRadius} /> */}
+      {/* <DummyWheel wheelRef={wheels[1]} radius={wheelRadius} /> */}
+      {/* <DummyWheel wheelRef={wheels[2]} radius={wheelRadius} /> */}
+      {/* <DummyWheel wheelRef={wheels[3]} radius={wheelRadius} /> */}
     </group>
   );
 };

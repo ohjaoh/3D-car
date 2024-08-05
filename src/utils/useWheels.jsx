@@ -29,23 +29,27 @@ const useWheels = (width, height, front, radius) => {
     {
       ...wheelInfo,
       chassisConnectionPointLocal: [-width * 0.65, height * 0.3, front],
+      isFrontWheel: true,
     },
     {
       ...wheelInfo,
       chassisConnectionPointLocal: [width * 0.65, height * 0.3, front],
+      isFrontWheel: true,
     },
     {
       ...wheelInfo,
       chassisConnectionPointLocal: [-width * 0.65, height * 0.3, -front],
+      isFrontWheel: false,
     },
     {
       ...wheelInfo,
       chassisConnectionPointLocal: [width * 0.65, height * 0.3, -front],
+      isFrontWheel: false,
     },
   ];
 
   const wheelFunc = () => ({
-    collisionFilterGroup:0,
+    collisionFilterGroup: 0,
     mass: 50,
     shapes: [
       {

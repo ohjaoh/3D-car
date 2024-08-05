@@ -1,0 +1,6 @@
+터미널을 glb가 있는 디렉터리로 잡아둔 다음 터미널에서 아래의 코드를 실행한다.
+
+기본 
+npx gltfjsx 'glb파일명' 
+경로지정
+npx gltfjsx 'glb파일명' --output ./파일명.jsx
