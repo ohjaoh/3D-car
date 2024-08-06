@@ -1,8 +1,11 @@
 // vehicle api, chassisApi
 
 import { useEffect, useState } from "react";
+import { useRecoilValue } from "recoil";
+import { stage1 } from "./atom";
 
 const useVehicleControls = (vehicleApi, chassisApi) => {
+  const motionStage = useRecoilValue(stage1);
   const [controls, setControls] = useState({});
 
   // 키누르고 떼는 이벤트헨들러
@@ -32,7 +35,7 @@ const useVehicleControls = (vehicleApi, chassisApi) => {
   }, []);
 
   useEffect(() => {
-    console.log(vehicleApi);
+    // console.log(vehicleApi);
     if (controls.ArrowUp) {
       vehicleApi.applyEngineForce(120, 2);
       vehicleApi.applyEngineForce(120, 3);
@@ -40,10 +43,10 @@ const useVehicleControls = (vehicleApi, chassisApi) => {
       vehicleApi.applyEngineForce(-120, 2);
       vehicleApi.applyEngineForce(-120, 3);
     }
-    // else if (controls.Enter) {
-    //     vehicleApi.setBrake(1, 2); // 0~1 1이 최대
-    //     vehicleApi.setBrake(1, 3);
-    // }
+    else if (controls.Enter) {
+        vehicleApi.setBrake(1, 2); // 0~1 1이 최대
+        vehicleApi.setBrake(1, 3);
+    }
     else {
       vehicleApi.applyEngineForce(0, 2);
       vehicleApi.applyEngineForce(0, 3);
@@ -65,6 +68,21 @@ const useVehicleControls = (vehicleApi, chassisApi) => {
       }
     }
   }, [controls, vehicleApi, chassisApi]);
+
+  const onHandleHistory = () => {
+    const url = "https://github.com/ohjaoh";
+    window.open(url, "_blank");
+  };
+
+  useEffect(() => {
+    if(controls.Enter && motionStage){
+      onHandleHistory()
+      setControls((controls)=>({
+        ...controls,
+        Enter:false,
+      }))
+    }
+  },[controls, motionStage])
 
   return controls;
 };

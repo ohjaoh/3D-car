@@ -14,11 +14,13 @@ import { useFrame } from "@react-three/fiber";
 import useFollowCam from "./utils/useFollowCam";
 import { CarBody } from "./components/CarBody";
 import { Wheel } from "./components/Wheel";
+import { useSetRecoilState } from "recoil";
+import { stage1 } from "./utils/atom";
 
 const Car = () => {
   const { pivot } = useFollowCam();
   const worldPosition = useMemo(() => new Vector3(), []); // 여기서 벡터3로 월드 위치(아마도 자동차의 위치같음)를 메모라이제이션? 하여 전역변수처럼 쓴다.
-
+  const setStage1 = useSetRecoilState(stage1);
   // const chassisBodyValue = useControls("chassisBody", {
   //   width: { value: 0.33, min: 0, max: 1 },
   //   height: { value: 0.35, min: 0, max: 1 },
@@ -42,6 +44,7 @@ const Car = () => {
   const [chassisBody, chassisApi] = useCompoundBody(
     () => ({
       // args: chassisBodyArgs,
+      collisionFilterGroup: 5, // 충돌시 collisionfilter.bodyFilterGroup의 값
       position,
       mass,
       rotation: [0, Math.PI, 0],
@@ -80,14 +83,34 @@ const Car = () => {
     // 피벗에 추가하고 씬에 피벗을 추가하여 카메라가 자동차를 따라가는 것
   };
 
+  const makeStage1 = () => {
+    const chassisPosition = new Vector3().setFromMatrixPosition(
+      chassisBody.current.matrixWorld
+    );
+    console.log("x", chassisPosition.x);
+    //2.3
+    console.log("z", chassisPosition.z);
+    //4.2
+    //원의 크기가 0.7
+    if (
+      Math.abs(3 - chassisPosition.x) < 0.7 &&
+      Math.abs(4.9 - chassisPosition.z) < 0.7
+    ) {
+      setStage1(true);
+    } else {
+      setStage1(false);
+    }
+  };
+
   // 매 프래임마다. mfc()를 호출
   useFrame(() => {
     makeFollowCam();
+    makeStage1();
   });
 
   return (
     <group ref={vehicle}>
-      <group ref={chassisBody}>
+      <group ref={chassisBody} name="chassisbody">
         <CarBody />
         {/* <DummyCarBody
           width={chassisBodyValue.width}
@@ -95,9 +118,9 @@ const Car = () => {
           front={chassisBodyValue.front}
         /> */}
       </group>
-      <Wheel wheelRef={wheels[0]} radius={wheelRadius} leftSide={true}/>
+      <Wheel wheelRef={wheels[0]} radius={wheelRadius} leftSide={true} />
       <Wheel wheelRef={wheels[1]} radius={wheelRadius} />
-      <Wheel wheelRef={wheels[2]} radius={wheelRadius} leftSide={true}/>
+      <Wheel wheelRef={wheels[2]} radius={wheelRadius} leftSide={true} />
       <Wheel wheelRef={wheels[3]} radius={wheelRadius} />
       {/* <DummyWheel wheelRef={wheels[0]} radius={wheelRadius} /> */}
       {/* <DummyWheel wheelRef={wheels[1]} radius={wheelRadius} /> */}
