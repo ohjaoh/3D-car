@@ -14,13 +14,16 @@ import { useFrame } from "@react-three/fiber";
 import useFollowCam from "./utils/useFollowCam";
 import { CarBody } from "./components/CarBody";
 import { Wheel } from "./components/Wheel";
-import { useSetRecoilState } from "recoil";
-import { stage1 } from "./utils/atom";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { stage1, stage2 } from "./utils/atom";
 
 const Car = () => {
   const { pivot } = useFollowCam();
   const worldPosition = useMemo(() => new Vector3(), []); // 여기서 벡터3로 월드 위치(아마도 자동차의 위치같음)를 메모라이제이션? 하여 전역변수처럼 쓴다.
   const setStage1 = useSetRecoilState(stage1);
+  const setStage2 = useSetRecoilState(stage2);
+  // const [value] = useRecoilState(stage2); // stage2의 상태 체크용
+
   // const chassisBodyValue = useControls("chassisBody", {
   //   width: { value: 0.33, min: 0, max: 1 },
   //   height: { value: 0.35, min: 0, max: 1 },
@@ -87,9 +90,9 @@ const Car = () => {
     const chassisPosition = new Vector3().setFromMatrixPosition(
       chassisBody.current.matrixWorld
     );
-    console.log("x", chassisPosition.x);
+    // console.log("x", chassisPosition.x);
     //2.3
-    console.log("z", chassisPosition.z);
+    // console.log("z", chassisPosition.z);
     //4.2
     //원의 크기가 0.7
     if (
@@ -101,11 +104,29 @@ const Car = () => {
       setStage1(false);
     }
   };
+  const makeStage2 = () => {
+    const chassisPosition = new Vector3().setFromMatrixPosition(
+      chassisBody.current.matrixWorld
+    );
+    // console.log("x", chassisPosition.x);
+    // -2.2
+    // console.log("z", chassisPosition.z);
+    // 4.8
+    if (
+      Math.abs(-3 - chassisPosition.x) < 0.8 &&
+      Math.abs(4.8 - chassisPosition.z) < 0.8
+    ) {
+      setStage2(true);
+    } else {
+      setStage2(false);
+    }
+  };
 
   // 매 프래임마다. mfc()를 호출
   useFrame(() => {
     makeFollowCam();
     makeStage1();
+    makeStage2();
   });
 
   return (
