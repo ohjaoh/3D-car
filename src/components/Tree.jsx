@@ -8,17 +8,17 @@ import { Html, useGLTF } from "@react-three/drei";
 import { useBox } from "@react-three/cannon";
 import { motion } from "framer-motion-3d";
 
-useGLTF.preload("/assets/models/tree.glb");
+// useGLTF.preload("/assets/models/tree.glb");
 
-export function Tree(props) {
-  const { nodes, materials } = useGLTF("assets/models/tree.glb");
+export function Tree({ position, model, material }) {
+  // const { nodes, materials } = useGLTF("assets/models/tree.glb");
   const [info, setInfo] = useState(false);
 
   const [ref, api] = useBox(() => ({
     args: [0.3, 1, 0.3],
     type: "Static",
     onCollide: handleCollision,
-    ...props,
+    position,
   }));
 
   const handleCollision = (e) => {
@@ -37,19 +37,21 @@ export function Tree(props) {
       timeout = setTimeout(() => setInfo(false), 1000);
     }
     return () => clearTimeout(timeout);
-  },[info]);
+  }, [info]);
 
   return (
     <group ref={ref}>
-      <motion.mesh
+      <motion.group
         animate={{ scale: [0, 0.2], y: [-1, 0] }}
         transition={{ delay: 1, duration: 0.3 }}
         scale={0.2}
-        geometry={nodes.tree.geometry}
-        material={materials["Material.003"]}
+        // geometry={nodes.tree.geometry}
+        // material={materials["Material.003"]}
         position={[0, 0, 0]}
         rotation={[-1.555, 0, 0]}
-      />
+      >
+        <model.TreeMesh material={material} />
+      </motion.group>
       {info ? (
         <Html center>
           <div className="information">이것은 나무입니다.</div>

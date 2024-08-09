@@ -5,6 +5,8 @@ import Car from "./Car";
 import { useEffect } from "react";
 import { useRecoilValue } from "recoil";
 import { isStartScene } from "./utils/atom";
+import { Stats, StatsGl } from "@react-three/drei";
+import DrawCallCounter from "./components/DrawCallCounter";
 function Scene() {
   // const bgValue = useControls({ bgColor: "#fff" });
 
@@ -39,6 +41,8 @@ function Scene() {
             <Ground rotation={[-Math.PI / 2, 0, 0]} />
           </Debug>
         </Physics>
+        <DrawCallCounter/>
+        <StatsGl showPanel={0} className="work"/>
       </Canvas>
     </>
   );

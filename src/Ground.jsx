@@ -8,6 +8,7 @@ import Banner from "./components/Banner";
 import { MotionStage } from "./components/MotionStage";
 import { MotionStage2 } from "./components/MotionStage2";
 import { Road } from "./components/Road";
+import AllTree from "./components/AllTree";
 
 export function Ground() {
   const [meshRef] = usePlane(() => ({
@@ -24,10 +25,18 @@ export function Ground() {
         <meshStandardMaterial color="black" wireframe />
       </mesh>
       {/* 나무 */}
-      <Tree position={[1, 0.5, -1]} />
+      <AllTree />
+      {/* 나무 있으면 60 없으면 54 나무 +5개 추가 69 */}
+      {/* <Tree position={[1, 0.5, -1]} />
       <Tree position={[-1, 0.5, -1]} />
       <Tree position={[3, 0.5, -1]} />
       <Tree position={[-3, 0.5, -1]} />
+      <Tree position={[-6, 0.5, 0]} />
+      <Tree position={[-6, 0.5, -2]} />
+      <Tree position={[-6, 0.5, -4]} />
+      <Tree position={[-6, 0.5, -6]} />
+      <Tree position={[-6, 0.5, -8]} />
+      <Tree position={[-6, 0.5, -10]} /> */}
 
       <Ball position={[0, 0.2, -2]} />
 
@@ -47,7 +56,7 @@ export function Ground() {
       <MotionStage2 position={[-4, 0.55, 5.5]} />
 
       <Road position={[-8.8, -0.06, 1]} rotation-y={Math.PI / 2} />
-      <Road position={[-8.8, -0.06, 10]} rotation-y={Math.PI / 2} />
+      <Road position={[-8.8, -0.06, -9]} rotation-y={Math.PI / 2} />
     </group>
   );
 }
