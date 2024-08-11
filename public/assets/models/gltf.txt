@@ -1,0 +1,16 @@
+npm install -g gltf-pipeline
+
+로 설치
+
+glb를 gltf로 변경하는 방법
+1단계 glb가 있는 폴더에 터미널열고 아래형식을 사용
+2단계 gltf-pipeline -i "변경할 glb파일" -o "출력될 gltf파일명"
+gltf-pipeline -i popup.glb -o popup.gltf
+
+텍스쳐를 이미지로 뽑는 방법
+gltf-pipeline -i "뽑아낼파일" -t   
+gltf-pipeline -i tree.glb -t   
+
+모델을 드라코로 압축하는 방법
+gltf-pipeline -i "압축할모델파일명" -o "출력할파일명" -d
+gltf-pipeline -i car_taxi.glb -o car-taxi.glb -d

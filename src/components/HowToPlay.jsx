@@ -25,8 +25,8 @@ const HowToPlay = () => {
 
   return (
     <motion.group 
-      onUpdate={() => console.log("진행중")}
-      onAnimationStart={() => console.log("시작")}
+      // onUpdate={() => console.log("진행중")}
+      // onAnimationStart={() => console.log("시작")}
       onAnimationComplete={() => setStart(true)}
       animate={{ y: [-2, 0], scale: [0, 1] }}
       transition={{ delay: 1.5, duration: 0.3 }}

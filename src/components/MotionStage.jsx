@@ -75,7 +75,7 @@ export function MotionStage({ position }) {
         {stage && (
           <Html center>
             <div className="information enter">
-              <img src={"/assets/images/enter.png"} alt="enter" />
+              <img src={"/assets/images/enter.webp"} alt="enter" />
               <p>Enter</p>
             </div>
           </Html>
